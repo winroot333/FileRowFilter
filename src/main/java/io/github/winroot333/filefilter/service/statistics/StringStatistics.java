@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 public class StringStatistics extends TypeStatistics {
   private final String LONG_STATISTICS_STRING =
-      "Minimal line length: %d\nMaximum line length: %d\n\n";
+      "Minimal line length: %d\nMaximum line length: %d\n";
 
   private final int minLength;
   private final int maxLength;

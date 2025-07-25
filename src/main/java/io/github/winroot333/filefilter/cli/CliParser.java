@@ -22,7 +22,6 @@ public class CliParser {
 
     // todo переделать обработку при выводе help
     if (cmd.hasOption("h")) {
-      printHelp();
       return null;
     }
 

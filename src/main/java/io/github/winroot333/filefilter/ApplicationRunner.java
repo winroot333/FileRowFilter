@@ -2,6 +2,7 @@ package io.github.winroot333.filefilter;
 
 import io.github.winroot333.filefilter.cli.ApplicationOptions;
 import io.github.winroot333.filefilter.cli.CliParser;
+import io.github.winroot333.filefilter.cli.CliWriter;
 import io.github.winroot333.filefilter.model.LineData;
 import io.github.winroot333.filefilter.service.FileProcessor;
 import io.github.winroot333.filefilter.service.FileWriter;
@@ -13,46 +14,77 @@ import org.apache.commons.cli.ParseException;
 public class ApplicationRunner {
   public static void main(String[] args) {
     try {
+      runApplication(args);
+    } catch (Exception e) {
+      CliWriter.error("Unexpected error: " + e.getMessage());
+    }
+  }
+
+  private static void runApplication(String[] args) throws Exception {
+    ApplicationOptions options = parseCommandLineArguments(args);
+    if (options == null) {
+      new CliParser().printHelp();
+      System.exit(1);
+    }
+
+    List<LineData> lines = processInputFiles(options.getInputFiles());
+    writeOutputFiles(options, lines);
+    printStatistics(options, lines);
+  }
+
+  private static ApplicationOptions parseCommandLineArguments(String[] args) {
+    try {
       CliParser cliParser = new CliParser();
       ApplicationOptions options = cliParser.parse(args);
 
-      cliParser.getValidationResults().forEach(e -> System.out.println(e.message()));
+      if (options == null){
+        return null;
+      }
+
+      cliParser.getValidationResults().forEach(e -> CliWriter.message(e.message()));
 
       if (cliParser.hasCriticalErrors()) {
-        System.out.println("Critical errors found, cannot continue execution");
-        System.exit(1);
+        CliWriter.error("Critical errors found, cannot continue execution");
+        return null;
       }
-
-      List<String> errors = new ArrayList<>();
-      var lines = new ArrayList<LineData>();
-      for (String file : options.getInputFiles()) {
-        try {
-          lines.addAll(FileProcessor.processFile(file));
-        } catch (Exception e) {
-          errors.add(e.getMessage());
-        }
-      }
-
-      var writer =
-          FileWriter.builder()
-              .outputPath(options.getOutputPath())
-              .filePrefix(options.getFilePrefix())
-              .appendMode(options.isAppendMode())
-              .build();
-
-      errors.addAll(writer.writeData(lines));
-
-      var statisticsService = new StatisticsService(options.isFullStatistics());
-      statisticsService.addData(lines);
-      System.out.println(statisticsService.getStatistics());
-
-      errors.forEach(System.err::println);
+      return options;
 
     } catch (ParseException e) {
-      System.err.println("Critical parse error: " + e.getMessage());
-      new CliParser().printHelp();
-    } catch (Exception e) {
-      System.err.println("Critical error: " + e.getMessage());
+      CliWriter.error("Critical argument parse error: " + e.getMessage());
+      return null;
     }
+  }
+
+  private static List<LineData> processInputFiles(List<String> inputFiles) {
+    List<String> errors = new ArrayList<>();
+    var lines = new ArrayList<LineData>();
+    for (String file : inputFiles) {
+      try {
+        lines.addAll(FileProcessor.processFile(file));
+      } catch (Exception e) {
+        errors.add(e.getMessage());
+      }
+    }
+    errors.forEach(System.err::println);
+    return lines;
+  }
+
+  private static void writeOutputFiles(ApplicationOptions options, List<LineData> lines) {
+    var writer =
+        FileWriter.builder()
+            .outputPath(options.getOutputPath())
+            .filePrefix(options.getFilePrefix())
+            .appendMode(options.isAppendMode())
+            .build();
+
+    var errors = writer.writeData(lines);
+
+    errors.forEach(System.err::println);
+  }
+
+  private static void printStatistics(ApplicationOptions options, List<LineData> lines) {
+    var statisticsService = new StatisticsService(options.isFullStatistics());
+    statisticsService.addData(lines);
+    CliWriter.message(statisticsService.getStatistics());
   }
 }

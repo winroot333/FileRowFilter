@@ -18,7 +18,7 @@ public class StatisticsService {
   private List<TypeStatistics> typeStatistics = new ArrayList<>();
 
   public void addData(List<LineData> lineData) {
-    this.lineData = lineData;
+    this.lineData.addAll(lineData);
     this.calculateStatistics();
   }
 

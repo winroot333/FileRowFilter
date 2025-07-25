@@ -10,7 +10,7 @@ public class IntStatistics extends TypeStatistics {
   private final double average;
 
   private final String LONG_STATISTICS_STRING =
-      "Minimal value: %d\nMaximum value: %d\nAverage: %.2f\n\n";
+      "Minimal value: %d\nMaximum value: %d\nAverage: %.2f\n";
 
   public IntStatistics(
       int elementCount, LineDataType type, long minVal, long maxVal, double average) {

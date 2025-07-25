@@ -24,15 +24,27 @@ public class CliOptions {
             .build());
 
     options.addOption(
-        Option.builder("a").longOpt("append").desc("Append to existing files").build());
+        Option.builder("a")
+                .longOpt("append")
+                .desc("Append to existing files")
+                .build());
 
     options.addOption(
-        Option.builder("s").longOpt("short-stats").desc("Show short statistics").build());
+        Option.builder("s")
+                .longOpt("short-stats")
+                .desc("Show short statistics")
+                .build());
 
     options.addOption(
-        Option.builder("f").longOpt("full-stats").desc("Show full statistics").build());
+        Option.builder("f")
+                .longOpt("full-stats")
+                .desc("Show full statistics")
+                .build());
 
-    options.addOption(Option.builder("h").longOpt("help").desc("Show help").build());
+    options.addOption(Option.builder("h")
+            .longOpt("help")
+            .desc("Show help")
+            .build());
 
     return options;
   }

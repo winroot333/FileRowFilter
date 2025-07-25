@@ -10,7 +10,7 @@ public class FloatStatistics extends TypeStatistics {
   private final double average;
 
   private final String LONG_STATISTICS_STRING =
-      "Minimal value: %.2f\nMaximum value: %.2f\nAverage: %.2f\n\n";
+      "Minimal value: %.2f\nMaximum value: %.2f\nAverage: %.2f\n";
 
   public FloatStatistics(
       int elementCount, LineDataType type, double minVal, double maxVal, double average) {
