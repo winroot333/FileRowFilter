@@ -6,7 +6,7 @@ import io.github.winroot333.filefilter.cli.CliWriter;
 import io.github.winroot333.filefilter.model.LineData;
 import io.github.winroot333.filefilter.service.FileProcessor;
 import io.github.winroot333.filefilter.service.FileWriter;
-import io.github.winroot333.filefilter.service.statistics.StatisticsService;
+import io.github.winroot333.filefilter.service.StatisticsService;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.cli.ParseException;

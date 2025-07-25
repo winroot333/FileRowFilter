@@ -1,26 +1,32 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+### Особенности реализации
+Парсинг параметров сделан с помощью apache commons cli чтобы не писать парсинг аргументов вручную.
+Написан юнит тест для парсера аргументов.
 
-    <groupId>io.github.winroot333</groupId>
-    <artifactId>file-row-filter</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+### Версии java и maven
+Java: 17
+
+maven: 3.9.9
+
+### Сборка
+
+```bash
+git clone https://github.com/winroot333/FileRowFilter.git
+cd filerowfilter
+mvn clean package -dSkipTests
+ -o testfile_1.txt testfile_2.txt
+```
+### Запуск
+```bash
+java -jar ./target/file-row-filter.jar -o ./output -s ./testdata/testfile_1.txt ./testdata/testfile_2.txt
+```
+### Библиотеки
+```xml
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <lombok.version>1.18.38</lombok.version>
         <commons-cli.version>1.9.0</commons-cli.version>
         <junit-jupiter.version>5.13.4</junit-jupiter.version>
         <assertj-core.version>3.27.3</assertj-core.version>
     </properties>
-
-    <build>
-        <finalName>file-row-filter</finalName>
-    </build>
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
@@ -49,7 +55,3 @@
             <version>${assertj-core.version}</version>
             <scope>test</scope>
         </dependency>
-
-    </dependencies>
-
-</project>

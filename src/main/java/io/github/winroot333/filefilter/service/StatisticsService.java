@@ -1,9 +1,14 @@
-package io.github.winroot333.filefilter.service.statistics;
+package io.github.winroot333.filefilter.service;
 
 import io.github.winroot333.filefilter.model.LineData;
 import io.github.winroot333.filefilter.model.LineDataType;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import io.github.winroot333.filefilter.service.statistics.FloatStatistics;
+import io.github.winroot333.filefilter.service.statistics.IntStatistics;
+import io.github.winroot333.filefilter.service.statistics.StringStatistics;
+import io.github.winroot333.filefilter.service.statistics.TypeStatistics;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
