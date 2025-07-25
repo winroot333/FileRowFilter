@@ -3,14 +3,11 @@ package io.github.winroot333.filefilter;
 import io.github.winroot333.filefilter.cli.ApplicationOptions;
 import io.github.winroot333.filefilter.cli.CliParser;
 import io.github.winroot333.filefilter.model.LineData;
-import io.github.winroot333.filefilter.model.LineDataType;
 import io.github.winroot333.filefilter.service.FileProcessor;
-import io.github.winroot333.filefilter.service.StatisticsService;
-import org.apache.commons.cli.ParseException;
-
+import io.github.winroot333.filefilter.service.FileWriter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import org.apache.commons.cli.ParseException;
 
 public class ApplicationRunner {
   public static void main(String[] args) {
@@ -26,14 +23,23 @@ public class ApplicationRunner {
       }
 
       List<String> errors = new ArrayList<>();
-      var rows = new ArrayList<LineData>();
-      for (String file : options.getInputFiles()){
+      var lines = new ArrayList<LineData>();
+      for (String file : options.getInputFiles()) {
         try {
-          rows.addAll(FileProcessor.processFile(file));
-        } catch (Exception e){
+          lines.addAll(FileProcessor.processFile(file));
+        } catch (Exception e) {
           errors.add(e.getMessage());
         }
       }
+
+      var writer =
+          FileWriter.builder()
+              .outputPath(options.getOutputPath())
+              .filePrefix(options.getFilePrefix())
+              .appendMode(options.isAppendMode())
+              .build();
+
+      errors.addAll(writer.writeData(lines));
 
       errors.forEach(System.err::println);
 
