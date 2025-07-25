@@ -11,9 +11,8 @@ maven: 3.9.9
 
 ```bash
 git clone https://github.com/winroot333/FileRowFilter.git
-cd filerowfilter
-mvn clean package -dSkipTests
- -o testfile_1.txt testfile_2.txt
+cd FileRowFilter
+mvn clean package -DskipTests
 ```
 ### Запуск
 ```bash
