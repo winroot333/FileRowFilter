@@ -38,3 +38,5 @@ build/
 .DS_Store
 /.idea
 /output
+/testfile_1.txt
+/testfile_2.txt

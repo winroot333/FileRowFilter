@@ -5,6 +5,7 @@ import io.github.winroot333.filefilter.cli.CliParser;
 import io.github.winroot333.filefilter.model.LineData;
 import io.github.winroot333.filefilter.service.FileProcessor;
 import io.github.winroot333.filefilter.service.FileWriter;
+import io.github.winroot333.filefilter.service.statistics.StatisticsService;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.cli.ParseException;
@@ -40,6 +41,10 @@ public class ApplicationRunner {
               .build();
 
       errors.addAll(writer.writeData(lines));
+
+      var statisticsService = new StatisticsService(options.isFullStatistics());
+      statisticsService.addData(lines);
+      System.out.println(statisticsService.getStatistics());
 
       errors.forEach(System.err::println);
 
