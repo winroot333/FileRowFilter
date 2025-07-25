@@ -11,7 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.cli.ParseException;
 
+/** Главный класс приложения для обработки файлов */
 public class ApplicationRunner {
+  /**
+   * Точка входа в приложение. Обрабатывает исключения верхнего уровня.
+   *
+   * @param args аргументы командной строки
+   */
   public static void main(String[] args) {
     try {
       runApplication(args);
@@ -20,6 +26,12 @@ public class ApplicationRunner {
     }
   }
 
+  /**
+   * Основной метод выполнения логики приложения.
+   *
+   * @param args аргументы командной строки
+   * @throws Exception при возникновении ошибок обработки
+   */
   private static void runApplication(String[] args) throws Exception {
     ApplicationOptions options = parseCommandLineArguments(args);
     if (options == null) {
@@ -32,17 +44,22 @@ public class ApplicationRunner {
     printStatistics(options, lines);
   }
 
+  /**
+   * Парсит и валидирует аргументы командной строки.
+   *
+   * @param args аргументы командной строки
+   * @return объект с параметрами приложения или null при ошибках или запросе помощи help
+   */
   private static ApplicationOptions parseCommandLineArguments(String[] args) {
     try {
       CliParser cliParser = new CliParser();
       ApplicationOptions options = cliParser.parse(args);
 
-      if (options == null){
+      if (options == null) {
         return null;
       }
 
       cliParser.getValidationResults().forEach(e -> CliWriter.message(e.message()));
-
       if (cliParser.hasCriticalErrors()) {
         CliWriter.error("Critical errors found, cannot continue execution");
         return null;
@@ -55,6 +72,12 @@ public class ApplicationRunner {
     }
   }
 
+  /**
+   * Обрабатывает входные файлы и собирает данные
+   *
+   * @param inputFiles список путей к входным файлам
+   * @return список обработанных строк данных
+   */
   private static List<LineData> processInputFiles(List<String> inputFiles) {
     List<String> errors = new ArrayList<>();
     var lines = new ArrayList<LineData>();
@@ -65,10 +88,16 @@ public class ApplicationRunner {
         errors.add(e.getMessage());
       }
     }
-    errors.forEach(System.err::println);
+    CliWriter.error(errors);
     return lines;
   }
 
+  /**
+   * Записывает результаты обработки в выходные файлы
+   *
+   * @param options параметры приложения
+   * @param lines данные для записи
+   */
   private static void writeOutputFiles(ApplicationOptions options, List<LineData> lines) {
     var writer =
         FileWriter.builder()
@@ -76,12 +105,16 @@ public class ApplicationRunner {
             .filePrefix(options.getFilePrefix())
             .appendMode(options.isAppendMode())
             .build();
-
     var errors = writer.writeData(lines);
-
-    errors.forEach(System.err::println);
+    CliWriter.error(errors);
   }
 
+  /**
+   * Формирует и выводит статистику по обработанным данным
+   *
+   * @param options параметры приложения
+   * @param lines данные для анализа
+   */
   private static void printStatistics(ApplicationOptions options, List<LineData> lines) {
     var statisticsService = new StatisticsService(options.isFullStatistics());
     statisticsService.addData(lines);

@@ -4,6 +4,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
+/** Класс параметров приложения. Хранит настройки полученные из аргументов командной строки */
 @Setter
 @Getter
 public class ApplicationOptions {

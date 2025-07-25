@@ -7,11 +7,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 
+/** Класс для записи данных в файлы с разделением по типам данных */
 @Builder
 @RequiredArgsConstructor
 public class FileWriter {
@@ -23,6 +23,12 @@ public class FileWriter {
   private final String FLOATS_FILE_NAME = "floats.txt";
   private final String STRINGS_FILE_NAME = "strings.txt";
 
+  /**
+   * Записывает данные в соответствующие файлы по типам.
+   *
+   * @param data список данных для записи
+   * @return список ошибок List
+   */
   public List<String> writeData(List<LineData> data) {
     List<String> errors = new ArrayList<>();
     StandardOpenOption[] options =
@@ -50,9 +56,18 @@ public class FileWriter {
       errors.add(e.getMessage());
     }
 
-    return Collections.emptyList();
+    return errors;
   }
 
+  /**
+   * Записывает данные конкретного типа в указанный файл.
+   *
+   * @param data список всех данных
+   * @param dataType тип данных для фильтрации
+   * @param fileName имя файла для записи
+   * @param options опции открытия файла
+   * @throws IOException при ошибках записи
+   */
   private void writeFile(
       List<LineData> data, LineDataType dataType, String fileName, StandardOpenOption[] options)
       throws IOException {
@@ -69,6 +84,12 @@ public class FileWriter {
     }
   }
 
+  /**
+   * Удаляет файл, если он существует
+   *
+   * @param filePath путь к файлу для удаления
+   * @throws IOException при ошибках удаления
+   */
   private void deleteFileIfExists(Path filePath) throws IOException {
     if (Files.exists(filePath)) {
       Files.delete(filePath);
