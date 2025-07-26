@@ -77,7 +77,9 @@ public class FileWriter {
     Path filePath = Path.of(outputPath, filePrefix + fileName);
 
     if (lines.isEmpty()) {
-      deleteFileIfExists(filePath);
+      if (!appendMode) {
+        deleteFileIfExists(filePath);
+      }
     } else {
       Files.createDirectories(filePath.getParent());
       Files.write(filePath, lines, options);
