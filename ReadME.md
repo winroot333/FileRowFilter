@@ -1,6 +1,14 @@
 ### Особенности реализации
-Парсинг параметров сделан с помощью apache commons cli чтобы не писать парсинг аргументов вручную.
+Парсинг параметров сделан с помощью apache commons cli, чтобы не писать парсинг аргументов вручную.
+
+Кроме аргументов указанных в задании, есть -h или -help для вывода помощи
+
 Написан юнит тест для парсера аргументов.
+
+Собирается jar со всеми зависимостями с помощью maven-assembly-plugin в файл
+/target/util-jar-with-dependencies.jar
+
+Использовал lombok чтобы не писать лишний код.
 
 ### Версии java и maven
 Java: 17
@@ -16,7 +24,7 @@ mvn clean package -DskipTests
 ```
 ### Запуск
 ```bash
-java -jar ./target/file-row-filter.jar -o ./output -s ./testdata/testfile_1.txt ./testdata/testfile_2.txt
+java -jar ./target/util-jar-with-dependencies.jar -o ./output -s ./testdata/testfile_1.txt ./testdata/testfile_2.txt
 ```
 ### Библиотеки
 ```xml
